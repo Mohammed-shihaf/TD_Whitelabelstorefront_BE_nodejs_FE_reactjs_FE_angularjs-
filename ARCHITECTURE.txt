@@ -1,0 +1,39 @@
+BUILD COMMANDS
+===============
+backend:
+  cd backend && npm install && npm test && npm start   # listens on $PORT or 3000
+
+frontend-react (self-serve storefront):
+  cd frontend-react && npm install && npm run build      # vite build, real verified
+
+frontend-angular (enterprise storefront):
+  cd frontend-angular && npm install && npx ng build && npx ng test --watch=false --browsers=ChromeHeadless
+
+ARCHITECTURE
+============
+White-Label / Multi-Tenant Storefront: ONE backend resolves tenant
+identity from a header (x-tenant-id here; subdomain-based in a real
+deployment) and returns tenant-scoped config.
+
+  backend/src/app.js
+    GET /api/tenant-config   <- resolves tenant from x-tenant-id header
+    GET /health
+
+  frontend-react/     Self-Serve Storefront (React)
+    - always requests with x-tenant-id: acme (self-serve tier)
+
+  frontend-angular/   Enterprise Storefront (Angular)
+    - always requests with x-tenant-id: globex (enterprise tier)
+
+Both frontends hit the SAME backend endpoint but are routed to
+different tenant tiers by convention - self-serve tenants get React,
+enterprise tenants get Angular. Contrast with the Micro-Frontend
+Platform (iframe embedding), the Migration Bridge (route splitting),
+the SaaS Platform (API namespace split), and the Design-System
+Harness (shared token contract) - here the split is by tenant tier
+resolved from request identity, not by route, namespace, or embedding.
+
+  backend/quality/          13 real JS code-quality tool fixtures
+  frontend-angular/quality/ 21 real TypeScript code-quality tool fixtures
+  (no duplication: JS tools live once in backend/, TS tools live once
+  in frontend-angular/; frontend-react connects via real API calls)
