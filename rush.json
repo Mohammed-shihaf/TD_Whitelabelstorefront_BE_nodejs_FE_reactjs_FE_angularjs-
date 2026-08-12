@@ -6,8 +6,8 @@
   "projectFolderMinDepth": 1,
   "projectFolderMaxDepth": 1,
   "projects": [
-    { "packageName": "whitelabelstorefront-backend", "projectFolder": "backend" },
-    { "packageName": "whitelabelstorefront-frontend-react", "projectFolder": "frontend-react" },
-    { "packageName": "whitelabelstorefront-frontend-angular", "projectFolder": "frontend-angular" }
+    { "packageName": "whitelabelstorefront-backend", "projectFolder": "backend", "versionPolicyName": "internalVariants" },
+    { "packageName": "whitelabelstorefront-frontend-react", "projectFolder": "frontend-react", "versionPolicyName": "internalVariants" },
+    { "packageName": "whitelabelstorefront-frontend-angular", "projectFolder": "frontend-angular", "versionPolicyName": "internalVariants" }
   ]
 }

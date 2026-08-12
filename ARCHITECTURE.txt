@@ -11,6 +11,16 @@ projects/variants, which fits a white-label/multi-tenant product).
 rush.json declares the 3 projects; Rush uses pnpm under the hood to
 install and link them, then runs each project's own "build" script.
 
+PROVEN: real Rush change tracking (Rush's actual reason for existing
+here, not just running build scripts) - each project is assigned the
+"internalVariants" version policy (common/config/rush/version-policies.json,
+individualVersion, not npm-published since all packages are private):
+  npx @microsoft/rush change --bulk --message "Add tenant orders resource + OrderSummary/TenantSwitcher components" --bump-type patch
+genuinely created 3 real change files under common/changes/<project>/,
+one per project, each recording what changed and how the version
+should bump - exactly the workflow a white-label product with many
+tenant variants needs to track which variant's build changed and why.
+
 Per-module (still available individually):
 backend:
   cd backend && npm install && npm test && npm start   # listens on $PORT or 3000
