@@ -1,4 +1,5 @@
 <div *ngIf="tenant" [style.background]="tenant.primaryColor">
   <h1 style="color: #fff">{{ tenant.brand }} storefront (Angular, enterprise)</h1>
+  <app-order-summary [orders]="orders"></app-order-summary>
 </div>
 <p *ngIf="!tenant">Loading tenant…</p>
