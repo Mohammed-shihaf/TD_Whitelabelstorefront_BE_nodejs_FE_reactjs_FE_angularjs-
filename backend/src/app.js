@@ -1,23 +1,13 @@
 "use strict";
 const express = require("express");
+const tenantConfigRouter = require("./routes/tenantConfig");
+const ordersRouter = require("./routes/orders");
+
 const app = express();
 app.use(express.json());
 
-// White-Label / Multi-Tenant Storefront: backend resolves tenant
-// identity from a header (subdomain-based in a real deployment) and
-// returns tenant-scoped config. Self-serve tenants -> React storefront.
-// Enterprise tenants -> Angular storefront.
-const TENANTS = {
-  acme: { tier: "self-serve", brand: "Acme", primaryColor: "#2563eb" },
-  globex: { tier: "enterprise", brand: "Globex Corp", primaryColor: "#0f172a" },
-};
-
-app.get("/api/tenant-config", (req, res) => {
-  const tenant = TENANTS[req.header("x-tenant-id")];
-  if (!tenant) return res.status(404).json({ error: "unknown tenant" });
-  res.json(tenant);
-});
-
+app.use("/api/tenant-config", tenantConfigRouter);
+app.use("/api/tenant-orders", ordersRouter);
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 if (require.main === module) {
