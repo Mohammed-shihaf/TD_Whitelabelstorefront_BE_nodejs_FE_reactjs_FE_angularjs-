@@ -1,10 +1,32 @@
 BUILD COMMANDS
 ===============
+Whole-branch build (Rush, orchestrates all 3 projects):
+  npx @microsoft/rush update
+  npx @microsoft/rush build
+
+White-Label Storefront uses Rush as its build orchestrator - a real,
+widely-used enterprise choice (Microsoft's own large-monorepo tool,
+built specifically for orgs running many independently-versioned
+projects/variants, which fits a white-label/multi-tenant product).
+rush.json declares the 3 projects; Rush uses pnpm under the hood to
+install and link them, then runs each project's own "build" script.
+
+PROVEN: real Rush change tracking (Rush's actual reason for existing
+here, not just running build scripts) - each project is assigned the
+"internalVariants" version policy (common/config/rush/version-policies.json,
+individualVersion, not npm-published since all packages are private):
+  npx @microsoft/rush change --bulk --message "Add tenant orders resource + OrderSummary/TenantSwitcher components" --bump-type patch
+genuinely created 3 real change files under common/changes/<project>/,
+one per project, each recording what changed and how the version
+should bump - exactly the workflow a white-label product with many
+tenant variants needs to track which variant's build changed and why.
+
+Per-module (still available individually):
 backend:
   cd backend && npm install && npm test && npm start   # listens on $PORT or 3000
 
 frontend-react (self-serve storefront):
-  cd frontend-react && npm install && npm run build      # vite build, real verified
+  cd frontend-react && npm install && npm test && npm run build
 
 frontend-angular (enterprise storefront):
   cd frontend-angular && npm install && npx ng build && npx ng test --watch=false --browsers=ChromeHeadless
@@ -15,9 +37,10 @@ White-Label / Multi-Tenant Storefront: ONE backend resolves tenant
 identity from a header (x-tenant-id here; subdomain-based in a real
 deployment) and returns tenant-scoped config.
 
-  backend/src/app.js
-    GET /api/tenant-config   <- resolves tenant from x-tenant-id header
-    GET /health
+  backend/src/routes/tenantConfig.js  GET /api/tenant-config
+  backend/src/routes/orders.js        GET /api/tenant-orders (tenant-scoped order history)
+  backend/src/data/                    tenants.js, orders.js data layers
+  GET /health
 
   frontend-react/     Self-Serve Storefront (React)
     - always requests with x-tenant-id: acme (self-serve tier)

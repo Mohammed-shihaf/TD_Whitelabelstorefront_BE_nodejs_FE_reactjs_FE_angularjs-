@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+  "rushVersion": "5.178.1",
+  "pnpmVersion": "9.15.0",
+  "nodeSupportedVersionRange": ">=18.0.0",
+  "projectFolderMinDepth": 1,
+  "projectFolderMaxDepth": 1,
+  "projects": [
+    { "packageName": "whitelabelstorefront-backend", "projectFolder": "backend", "versionPolicyName": "internalVariants" },
+    { "packageName": "whitelabelstorefront-frontend-react", "projectFolder": "frontend-react", "versionPolicyName": "internalVariants" },
+    { "packageName": "whitelabelstorefront-frontend-angular", "projectFolder": "frontend-angular", "versionPolicyName": "internalVariants" }
+  ]
+}
