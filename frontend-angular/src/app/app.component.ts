@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Order } from './orders';
+import { OrderSummaryComponent } from './components/order-summary.component';
 
 interface Tenant {
   tier: string;
@@ -13,13 +15,14 @@ interface Tenant {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, HttpClientModule],
+  imports: [CommonModule, HttpClientModule, OrderSummaryComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   title = 'White-Label Storefront (Angular, enterprise)';
   tenant: Tenant | null = null;
+  orders: Order[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -28,6 +31,12 @@ export class AppComponent implements OnInit {
       .get<Tenant>('/api/tenant-config', { headers: { 'x-tenant-id': 'globex' } })
       .subscribe({
         next: (data) => (this.tenant = data),
+        error: () => {},
+      });
+    this.http
+      .get<{ orders: Order[] }>('/api/tenant-orders', { headers: { 'x-tenant-id': 'globex' } })
+      .subscribe({
+        next: (data) => (this.orders = data.orders),
         error: () => {},
       });
   }
