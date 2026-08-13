@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Add tenant orders resource + OrderSummary/TenantSwitcher components",
+      "type": "patch",
+      "packageName": "whitelabelstorefront-frontend-react"
+    }
+  ],
+  "packageName": "whitelabelstorefront-frontend-react",
+  "email": "shihaf@Testable.Cloud"
+}
