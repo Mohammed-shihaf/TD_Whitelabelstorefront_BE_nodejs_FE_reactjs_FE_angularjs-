@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "version-label rollout for whitelabelstorefront_BE_nodejs20_FE_reactjs18_FE_angularjs17",
+      "type": "patch",
+      "packageName": "whitelabelstorefront-frontend-angular"
+    }
+  ],
+  "packageName": "whitelabelstorefront-frontend-angular",
+  "email": "shihaf@Testable.Cloud"
+}
